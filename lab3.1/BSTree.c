@@ -101,7 +101,13 @@ void insertSorted(BSTree* tree, int data)                                       
    Det racker att ni implementerar LR ordningarna*/
 void printPreorder(const BSTree tree, FILE *textfile)
 {
-
+   if(isEmpty(tree)){                                                                              // if tree is empty return
+      return;
+   }else{
+      fprintf(textfile, "%i, ", tree->data);                                                       // print current node
+      printPreorder(tree->left, textfile);                                                         // recursive call
+      printPreorder(tree->right, textfile);                                                        // recursive call
+   }
 }
 
 void printInorder(const BSTree tree, FILE *textfile)                                               // prints tree in inorder
@@ -119,7 +125,13 @@ void printInorder(const BSTree tree, FILE *textfile)                            
 
 void printPostorder(const BSTree tree, FILE *textfile)
 {
-
+   if(isEmpty(tree)){                                                                              // if tree is empty return
+      return;
+   }else{
+      printPostorder(tree->left, textfile);                                                        // recursive call
+      printPostorder(tree->right, textfile);                                                       // recursive call
+      fprintf(textfile, "%i, ", tree->data);                                                       // print current node
+   }
 }
 
 int find(const BSTree tree, int data)                                                              // returns 1 if data is in tree, 0 otherwise
