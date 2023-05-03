@@ -20,26 +20,27 @@ static struct treeNode* createNode(int data)                                    
 
 int findSmallest(const BSTree tree)                                                                // finds the smallest element in the tree
 {
-   if(isEmpty(tree)){                                                                              // if tree is empty return 0
+   if(isEmpty(tree)){                                                                              // if tree is empty return -1
       return -1;
    }else{
-      if(tree->left != NULL){                                                                      // if there is a left child, go left
-         findSmallest(tree->left);                                                                 // recursive call
+      BSTree temp = tree;                                                                          // create a copy of tree to not destroy the original tree
+      if(temp->left == NULL){                                                                      // if left child is NULL, return data
+         return temp->data;
       }else{
-         return tree->data;                                                                        // if there is no smaller child, return data
+         return findSmallest(temp->left);                                                          // if left child is not NULL, search left
       }
    }
-   return -2;
 }
 
 static int* writeSortedToArray(const BSTree tree)                                                  // writes the tree to an array in sorted order  
 {
    if(isEmpty(tree)){                                                                              // if tree is empty return NULL
-      return NULL;
+      return -3;
    }else{
       int size = numberOfNodes(tree);
       int* array = (int*)malloc(sizeof(int) * size);                                               // allocate memory for array
       assert(array != NULL);                                                                       // assert that allocation succeeded
+
       BSTree temp = tree;                                                                          // create a copy of tree to not destroy the original tree
 
       for(int i = 0; i < size; i++){                                                               // write tree to array
@@ -51,15 +52,15 @@ static int* writeSortedToArray(const BSTree tree)                               
    }
 }
 
-static void buildTreeSortedFromArray(BSTree* tree, const int arr[], int size)                     // builds a balanced tree from a sorted array
+static void buildTreeSortedFromArray(BSTree* tree, const int arr[], int size)                      // builds a balanced tree from a sorted array
 {
    if(size == 0){                                                                                  // if size is 0, return
       return;
    }else{
-      int middle = size / 2;                                                                       // find middle element in array
+      int middle = size / 2;                                                                       // find middle of array
       insertSorted(tree, arr[middle]);                                                             // insert middle element in tree
-      buildTreeSortedFromArray(tree, arr, middle);                                                 // build left subtree
-      buildTreeSortedFromArray(tree, arr + middle + 1, size - middle - 1);                         // build right subtree
+      buildTreeSortedFromArray(tree, arr, middle);                                                 // build tree from left half of array
+      buildTreeSortedFromArray(tree, arr + middle + 1, size - middle - 1);                         // build tree from right half of array
    }
 }
 
@@ -96,9 +97,6 @@ void insertSorted(BSTree* tree, int data)                                       
    }
 }
 
-/* Utskriftsfunktioner
-   Vid anrop: anvand stdio som andra argument for att skriva ut p� skarmen
-   Det racker att ni implementerar LR ordningarna*/
 void printPreorder(const BSTree tree, FILE *textfile)
 {
    if(isEmpty(tree)){                                                                              // if tree is empty return
@@ -115,11 +113,9 @@ void printInorder(const BSTree tree, FILE *textfile)                            
    if(isEmpty(tree)){                                                                              // if tree is empty return
       return;
    }else{
-      BSTree temp = tree;                                                                          // create a copy of tree to not destroy the original tree
-      int num = findSmallest(temp);                                                                // find smallest element in tree
-      fprintf(textfile, "%i, ", num);                                                              // print smallest element
-      removeElement(&temp, num);                                                                   // remove smallest element
-      printInorder(temp, textfile);                                                                // recursive call
+      printInorder(tree->left, textfile);                                                          // recursive call
+      fprintf(textfile, "%i, ", tree->data);                                                       // print current node
+      printInorder(tree->right, textfile);                                                         // recursive call
    }
 }
 
