@@ -42,6 +42,7 @@ static int linearProbe(const HashTable* htable, Key key, unsigned int *col)
 HashTable createHashTable(unsigned int size)
 {
     HashTable* htable = (HashTable*)malloc(sizeof(HashTable) * size);
+    (*htable).table = (Bucket*)malloc(sizeof(Bucket) * size);                   //  why does this not work
     (*htable).size = size;
     assert(htable != NULL);
 
