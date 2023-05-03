@@ -10,7 +10,7 @@
 #define SIZE 50
 #define LOOPS 1000
 
-/*Typer fšr att hantera ett dynamiskt antal tabeller - anvands i compareHashTableSizes*/
+/*Typer fï¿½r att hantera ett dynamiskt antal tabeller - anvands i compareHashTableSizes*/
 typedef struct{
     HashTable table;
     int tableSize;
@@ -28,7 +28,7 @@ static int getTableSize(int nr);
 
 /*Testfunktioner*/
 void compareHashTableSizes(void);/*Valj hur manga olika hashtabellsstorlekar du vill jamfora. Lagger in samma data i samtliga storlekar och skriver ut antal krockar med respektive storlek*/
-void test(void); /*Testar samtliga funktioner och olika fall fšr hashtabellen.*/
+void test(void); /*Testar samtliga funktioner och olika fall fï¿½r hashtabellen.*/
 void menu(void); /*A menu to test your functions with manual data och random data*/
 
 
@@ -42,7 +42,7 @@ int main(void)
 }
 
 /*********************************************************************************************************/
-/*Funktioner fšr meny, testfunktion och for att jamfora krockar for olika storlekar pa hashtabellen*/
+/*Funktioner fï¿½r meny, testfunktion och for att jamfora krockar for olika storlekar pa hashtabellen*/
 /*********************************************************************************************************/
 
 static void fillArrayWithPersons(Person *list)
@@ -133,7 +133,8 @@ void compareHashTableSizes(void)
 /*Testar samtliga funktioner och olika fall for hashtabellen. Du kan nar som helst lagga till ett anrop till printHashTable(&htable); for att se hur hashtabellen ser ut*/
 void test(void)
 {
-    HashTable htable = createHashTable(10); /*En battre storlek for mŠngden 9 ar 13. Denna funktion (test) ar dock endast till for att testa att hashtabellens funktioner implementerats korrekt och %10 Šr lattare for gemene man att berakna Šn %13.*/
+    HashTable htable = createHashTable(10); /*En battre storlek for mï¿½ngden 9 ar 13. Denna funktion (test) ar dock endast till for att testa att hashtabellens funktioner implementerats korrekt och %10 ï¿½r lattare for gemene man att berakna ï¿½n %13.*/
+    int temp = getSize(&htable);
     assert(getSize(&htable) == 10);
     Person arrPersons[9] = {{931014, 81.0, "Tobias"},
                             {881011, 75.0, "Alva"},
@@ -173,7 +174,7 @@ void test(void)
     assert(htable.table[1].value.weight == aPerson.weight);
     assert(strcmp(htable.table[1].value.name, aPerson.name) == 0);
     
-    //Soker efter person som ligger pŒ ratt plats och person som ligger annan plats pga krock
+    //Soker efter person som ligger pï¿½ ratt plats och person som ligger annan plats pga krock
     aPersonPointer = lookup(&htable, 790408);
     assert(strcmp(aPersonPointer->name, "Nora") == 0);
     aPersonPointer = lookup(&htable, 740318);
