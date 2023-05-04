@@ -4,6 +4,7 @@
 #include<assert.h>
 #include<stdlib.h>
 #include<stdio.h>
+#include<string.h>
 
 	// Anvands for att markera en ledig plats i Hashtabellen
 
@@ -59,14 +60,20 @@ HashTable createHashTable(unsigned int size)
 unsigned int insertElement(HashTable* htable, const Key key, const Value value)
 {
     int col = 0;
+    if(lookup(htable, key) != NULL){
+        for(int i = 0; i < htable->size; i++){
+            if((*htable).table[i].key == key){
+                htable->table[i].value = value;
+            }
+        }        
+        return col;
+    }
+
     int index = linearProbe(htable, key, &col);
     (*htable).table[index].key = key;
-    (*htable).table[index].value = value;
+    htable->table[index].value = value;
 
-    for(int i = 0; i < htable->size; i++){
-        printf("%d ", (*htable).table[i].key);
-    }
-    printf("\n");
+    //printf("%s, %f, %i\n", htable->table[index].value.name, htable->table[index].value.weight, htable->table[index].value.personalNumber);
 
     assert(lookup(htable, key) != NULL);
     return col; 

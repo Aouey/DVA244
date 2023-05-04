@@ -162,10 +162,10 @@ void test(void)
     assert(htable.table[4].key == 931014);
     assert(htable.table[5].key == 600704);
     assert(htable.table[6].key == 801204);
-    assert(htable.table[7].key == UNUSED);
-    assert(htable.table[8].key == 790408);
-    assert(htable.table[9].key == 510929);
-    assert(collisions == 11);
+    assert(htable.table[7].key == UNUSED); 
+    assert(htable.table[8].key == 790408); 
+    assert(htable.table[9].key == 510929); 
+    assert(collisions == 11);              
     
     //lagg till dubblett av key - value ska uppdateras
     strcpy(aPerson.name, "Anna");
