@@ -154,6 +154,7 @@ void test(void)
     {
         collisions+= insertElement(&htable, arrPersons[i].personalNumber, arrPersons[i]);
     }
+    
     assert(htable.table[0].key == 900610);
     assert(htable.table[1].key == 881011);
     assert(htable.table[2].key == 740318);

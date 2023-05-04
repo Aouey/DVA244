@@ -26,11 +26,12 @@ static int linearProbe(const HashTable* htable, Key key, unsigned int *col)
         return index;
     }else{
         while((*htable).table[index].key != UNUSED){
+
+            (*col)++;
             index++;
-            if(index == size - 1){
+            if(index >= size){
                 index = 0;
             }
-            *col++;
         }
         return index;
     }
@@ -42,9 +43,9 @@ static int linearProbe(const HashTable* htable, Key key, unsigned int *col)
 HashTable createHashTable(unsigned int size)
 {
     HashTable* htable = (HashTable*)malloc(sizeof(HashTable) * size);
-    (*htable).table = (Bucket*)malloc(sizeof(Bucket) * size);                   //  why does this not work
-    (*htable).size = size;
+    htable->table = (struct Bucket*)malloc(sizeof(struct Bucket) * size);    
     assert(htable != NULL);
+    (*htable).size = size;
 
     for(int i = 0; i < size; i++){
         (*htable).table[i].key = UNUSED;
@@ -57,10 +58,15 @@ HashTable createHashTable(unsigned int size)
 /* Returnerar antalet krockar (som r�knas i linearProbe() )*/
 unsigned int insertElement(HashTable* htable, const Key key, const Value value)
 {
-    int* col = 0;
-    int index = linearProbe(htable, key, col);
+    int col = 0;
+    int index = linearProbe(htable, key, &col);
     (*htable).table[index].key = key;
     (*htable).table[index].value = value;
+
+    for(int i = 0; i < htable->size; i++){
+        printf("%d ", (*htable).table[i].key);
+    }
+    printf("\n");
 
     assert(lookup(htable, key) != NULL);
     return col; 
@@ -81,9 +87,12 @@ const Value* lookup(const HashTable* htable, const Key key)
     if((*htable).table[index].key == key){
         return &(*htable).table[index].value;
     }else{
-        int* col = 0;
-        index = linearProbe(htable, key, col);
-        return &(*htable).table[index].value;
+        for(int i = 0; i < size; i++){
+            if((*htable).table[i].key == key){
+                return &(*htable).table[i].value;
+            }
+        }
+        return NULL;
     }
 }
 
