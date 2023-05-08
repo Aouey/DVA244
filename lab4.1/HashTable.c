@@ -55,11 +55,9 @@ static int linearProbe(const HashTable* htable, Key key, unsigned int *col)     
 
 HashTable createHashTable(unsigned int size)                                                // Creates a new HashTable
 {
-    HashTable* htable = (HashTable*)malloc(sizeof(HashTable) * size);                       // Allocate memory for HashTable and Buckets
+    HashTable* htable;                       // Allocate memory for HashTable and Buckets
     htable->table = (struct Bucket*)malloc(sizeof(struct Bucket) * size); 
-
-    assert(htable != NULL);                                                                 // Assert that memory was allocated
-    assert(htable->table != NULL);
+    assert(htable->table != NULL);                                                          // Assert that memory is allocated
 
     (*htable).size = size;                                                                  // Set size of table
 

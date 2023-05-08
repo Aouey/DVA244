@@ -40,13 +40,13 @@ static int* writeSortedToArray(const BSTree tree)                               
       int size = numberOfNodes(tree);
       int* array = (int*)malloc(sizeof(int) * size);                                               // allocate memory for array
       assert(array != NULL);                                                                       // assert that allocation succeeded
+      int i = 0;
 
-      BSTree temp = tree;                                                                          // create a copy of tree to not destroy the original tree
+      array[i]= insertSortedToArray(tree->left);         // Does not work
+      array[size] = tree->data;
+      insertSortedToArray(tree->right);
+      i++;
 
-      for(int i = 0; i < size; i++){                                                               // write tree to array
-         array[i] = findSmallest(temp);                                                            // find smallest element in tree and write it to array
-         removeElement(&temp, array[i]);                                                           // remove smallest element from tree to not write it again
-      }
 
       return array;                                                                                // return array
    }
