@@ -35,7 +35,7 @@ int findSmallest(const BSTree tree)                                             
 static int* writeSortedToArray(const BSTree tree)                                                  // writes the tree to an array in sorted order  
 {
    if(isEmpty(tree)){                                                                              // if tree is empty return NULL
-      return -3;
+      return NULL;
    }else{
       int size = numberOfNodes(tree);
       int* array = (int*)malloc(sizeof(int) * size);                                               // allocate memory for array
@@ -235,6 +235,9 @@ void balanceTree(BSTree* tree)                                                  
       int* array = writeSortedToArray(*tree);
       freeTree(tree);
       buildTreeSortedFromArray(tree, array, size);                                                 // build tree from array
+
+      free(array);                                                                                 // free memory allocated for array
+      array = NULL;
    }
 }
 
@@ -247,6 +250,7 @@ void freeTree(BSTree* tree)                                                     
       freeTree(&(*tree)->right);
       free(*tree);
       *tree = NULL;
-      return;
+
+      assert(isEmpty(*tree));                                                                      // assert tree is empty
    }
 }
