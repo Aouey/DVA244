@@ -12,12 +12,25 @@ static int hash(Key key, int tablesize)                                         
 }
 
 int getIndex(HashTable htable, Key key){                                                    // Returns index of key, -1 if not found
-    for(int i = 0; i < htable.size; i++){
-        if(htable.table[i].key == key){
-            return i;
+    int index = hash(key, htable.size);                                                     // Get hash index of key
+    int loop = 0;
+    
+    if(htable.table[index].key == key){                                                     // If key is at hash index, return index
+        return index;
+
+    }else{
+        for(int i = index; i < htable.size; i++){
+            if(htable.size == i + 1 && !loop){                                              // If probed to end of table, start from beginning
+                i = 0;
+                loop = 1;                                                                   // Set loop to 1 to prevent infinite loop
+            }
+
+            if(htable.table[i].key == key){                                                 // If key is found, return index
+                return i;
+            }
         }
     }
-    return -1;
+    return -1;                                                                              // If key is not found, return -1
 }
 
 static int linearProbe(const HashTable* htable, Key key, unsigned int *col)                 // Linear probing, returns closest free index
@@ -81,23 +94,22 @@ void deleteElement(HashTable* htable, const Key key)                            
     int index = getIndex(*htable, key);                                                     // Get index of key
     index >= 0 ? (*htable).table[index].key = UNUSED : 0;                                   // If key exists, set key to UNUSED
 
-    assert(lookup(htable, key) == NULL);                                                    // Assert that key is deleted
+    for(int i = 0; i < htable->size; i++){                                                  // Rehash all elements
+        struct Bucket temp = htable->table[i];
+        (*htable).table[i].key = UNUSED;
+        insertElement(htable, temp.key, temp.value);
+    }
 }
 
 const Value* lookup(const HashTable* htable, const Key key)                                 // Returns pointer to value of target key
 {
     int size = (*htable).size;
-    int index = hash(key, size);                                                            // Get hash index of key
+    int index = getIndex(*htable, key);                                                     // Get index of key
 
-    if((*htable).table[index].key == key){                                                  // If key is at hash index, return value
+    if(index >= 0){                                                                         // If key exists, return pointer to value
         return &(*htable).table[index].value;
-    }else{                                                                                  // Else, search for key
-        index = getIndex(*htable, key);                                                     // Get index of key
-        if(index > 0){                                                                      // If key exists, return value
-            return &(*htable).table[index].value;
-        }else{                                                                              // Else, return NULL
-            return NULL;
-        }
+    }else{                                                                                  // Else, return NULL
+        return NULL;
     }
 }
 

@@ -184,8 +184,6 @@ void test(void)
     //Soker efter person som inte finns i tabellen
     assert(lookup(&htable, 600705) == NULL);
     
-    //printHashTable(&htable);
-
     //Ta bort en person som inte har nagra efterfoljande
     deleteElement(&htable, 801204);
     assert(lookup(&htable, 801204) == NULL);
@@ -195,18 +193,16 @@ void test(void)
     deleteElement(&htable, 790408);
     assert(lookup(&htable, 790408) == NULL);
 
-    //printHashTable(&htable);
-
-    // assert(htable.table[0].key == 900610);      //  convinced this is wrong, the keys are shuffled around
-    // assert(htable.table[1].key == 881011);
-    // assert(htable.table[2].key == 830709);
-    // assert(htable.table[3].key == UNUSED);
-    // assert(htable.table[4].key == 931014);
-    // assert(htable.table[5].key == 600704);
-    // assert(htable.table[6].key == UNUSED);
-    // assert(htable.table[7].key == UNUSED);
-    // assert(htable.table[8].key == 740318);
-    // assert(htable.table[9].key == 510929);
+    assert(htable.table[0].key == 900610);
+    assert(htable.table[1].key == 881011);
+    assert(htable.table[2].key == 830709);
+    assert(htable.table[3].key == UNUSED);
+    assert(htable.table[4].key == 931014);
+    assert(htable.table[5].key == 600704);
+    assert(htable.table[6].key == UNUSED);
+    assert(htable.table[7].key == UNUSED);
+    assert(htable.table[8].key == 740318);
+    assert(htable.table[9].key == 510929);
     
     //Tom hela hashtabellen
     deleteElement(&htable, 900610);
