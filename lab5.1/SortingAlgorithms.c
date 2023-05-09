@@ -45,8 +45,28 @@ static void selectionSort(ElementType* arrayToSort, unsigned int size, Statistic
 {
 }
 
+void auxMerge(ElementType* arrayOne, ElementType* arrayTwo, ElementType* arrayToSort, int sizeOne, int sizeTwo){
+	
+}
+
 static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
+	if(lessThan(size, 1, statistics)) return;																	// If the array is smaller than 2, return
+	int middle = size/2;
+
+	ElementType* left = malloc(sizeof(ElementType) * middle);													// Allocate memory for the left array
+	ElementType* right = malloc(sizeof(ElementType) * (size - middle));											// Allocate memory for the right array
+
+	for(int i = 0; lessThan(i, middle, statistics); i++){														// Loops through the left array
+		left[i] = arrayToSort[i];																				// Copies the elements from the original array to the left array
+	}
+
+	for(int i = middle; lessThan(i, size, statistics); i++){													// Loops through the right array
+		right[i - middle] = arrayToSort[i];																		// Copies the elements from the original array to the right array
+	}
+
+	mergeSort(left, middle, statistics);																		// Sorts the left array
+	mergeSort(right, size - middle, statistics);																// Sorts the right array
 }
 
 static void quickSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
