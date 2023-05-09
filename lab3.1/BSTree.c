@@ -40,13 +40,12 @@ static int* writeSortedToArray(const BSTree tree)                               
       int size = numberOfNodes(tree);
       int* array = (int*)malloc(sizeof(int) * size);                                               // allocate memory for array
       assert(array != NULL);                                                                       // assert that allocation succeeded
-      int i = 0;
-
-      array[i]= insertSortedToArray(tree->left);         // Does not work
-      array[size] = tree->data;
-      insertSortedToArray(tree->right);
-      i++;
-
+      
+      int index = 0;                                                                               // index for array
+      array[index] = writeSortedToArray(tree->left);                                               // recursive call
+      array[index] = tree->data;                                                                   // write data to array
+      index++;                                                                                     // increment index
+      array[index] = writeSortedToArray(tree->right);                                              // recursive call
 
       return array;                                                                                // return array
    }
@@ -63,7 +62,6 @@ static void buildTreeSortedFromArray(BSTree* tree, const int arr[], int size)   
       buildTreeSortedFromArray(tree, arr + middle + 1, size - middle - 1);                         // build tree from right half of array
    }
 }
-
 
 BSTree emptyTree(void)                                                                             // creates an empty tree 
 {
