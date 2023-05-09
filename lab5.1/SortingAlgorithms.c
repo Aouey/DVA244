@@ -46,7 +46,7 @@ static void selectionSort(ElementType* arrayToSort, unsigned int size, Statistic
 }
 
 void auxMerge(ElementType* arrayOne, ElementType* arrayTwo, ElementType* arrayToSort, int sizeOne, int sizeTwo){
-	
+
 }
 
 static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
@@ -65,8 +65,8 @@ static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* s
 		right[i - middle] = arrayToSort[i];																		// Copies the elements from the original array to the right array
 	}
 
-	mergeSort(left, middle, statistics);																		// Sorts the left array
-	mergeSort(right, size - middle, statistics);																// Sorts the right array
+	mergeSort(left, middle, statistics);																		// splits the left array 
+	mergeSort(right, size - middle, statistics);																// splits the right array
 }
 
 static void quickSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
