@@ -239,16 +239,21 @@ void balanceTree(BSTree* tree)                                                  
    }
 }
 
-void freeTree(BSTree* tree)                                                                        // frees memory allocated for tree
+void freeTree(BSTree* tree)
 {
-   if(isEmpty(*tree)){                                                                             // if tree is empty return
+   if(isEmpty(*tree)){
       return;
-   }else{                                                                                          // if tree is not empty free memory and return
+   }else{
+      printInorder(*tree, stdout); printf("\n-\n");
+
       freeTree(&(*tree)->left);
       freeTree(&(*tree)->right);
-      free(*tree);
+      isEmpty(*tree) ? 0 : free(*tree);
+
+      printInorder(*tree, stdout); printf("\n : \n");
+      
       *tree = NULL;
 
-      assert(isEmpty(*tree));                                                                      // assert tree is empty
+      assert(isEmpty(*tree));
    }
 }
