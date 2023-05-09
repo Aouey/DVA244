@@ -20,15 +20,21 @@ int isImplemented(SortingAlgorithm algorithm)
 	}
 }
 
-/*Antalet byten i en och samma algoritm kan vara olika beroende pŒ implementationen. Ibland ligger datat redan pŒ rŠtt plats och dŒ kan man vŠlja att testa det och inte gšra ett byte (vilket ger extra jŠmfšrelse) eller sŒ kan man ŠndŒ gšra ett byte (med sig sjŠlv). Fšljer man de algoritmer som vi gŒtt igenom pŒ fšrelŠsningarna exakt sŒ gšr man en swap Šven pŒ ett element som ligger pŒ rŠtt plats
+/*Antalet byten i en och samma algoritm kan vara olika beroende pï¿½ implementationen. Ibland ligger datat redan pï¿½ rï¿½tt plats och dï¿½ kan man vï¿½lja att testa det och inte gï¿½ra ett byte (vilket ger extra jï¿½mfï¿½relse) eller sï¿½ kan man ï¿½ndï¿½ gï¿½ra ett byte (med sig sjï¿½lv). Fï¿½ljer man de algoritmer som vi gï¿½tt igenom pï¿½ fï¿½relï¿½sningarna exakt sï¿½ gï¿½r man en swap ï¿½ven pï¿½ ett element som ligger pï¿½ rï¿½tt plats
  
-    NŠr du analyserar det data som genereras (result.txt) sŒ behšver du ha detta i Œtanke */
+    Nï¿½r du analyserar det data som genereras (result.txt) sï¿½ behï¿½ver du ha detta i ï¿½tanke */
 
 /******************************************************************************************/
 /* Era algoritmer har: */
 
-static void bubbleSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
+static void bubbleSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)						// Bubble Sort
 {
+	for(int i = 0; lessThan(i, size - 1, statistics); i++){														// Loops through the array
+		if(greaterThan(arrayToSort[i], arrayToSort[i+1], statistics)){											// Checks if the current element is bigger than the next
+			swapElements(&arrayToSort[i], &arrayToSort[i+1], statistics);										// If true swap the elements
+		}
+	}
+	isSorted(arrayToSort, size) == 1 ? 0 : bubbleSort(arrayToSort, size, statistics);							// If the array is not sorted, call the function again
 }
 
 static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
@@ -115,7 +121,7 @@ static void sortArrays(SortingArray toBeSorted[])
 		if (!isSorted(current->arrayToSort, current->arraySize))
 		{
 			printf("Fel! Algoritmen %s har inte sorterat korrekt!\n", getAlgorithmName(current->algorithm));
-			printf("Resultatet är: \n");
+			printf("Resultatet ï¿½r: \n");
 			printArray(current->arrayToSort, current->arraySize, stdout);
 			assert(0); // Aktiveras alltid
 		}
