@@ -12,21 +12,18 @@ static int hash(Key key, int tablesize)                                         
 }
 
 int getIndex(HashTable htable, Key key){                                                    // Returns index of key, -1 if not found
-    int index = hash(key, htable.size);                                                     // Get hash index of key
-    int loop = 0;
+    int index = hash(key, (int)htable.size);                                                // Get hash index of key
+    int iterateIndex = 0;                                                                   // Index to iterate through table
     
     if(htable.table[index].key == key){                                                     // If key is at hash index, return index
         return index;
 
     }else{
-        for(int i = index; i < htable.size; i++){
-            if(htable.size == i + 1 && !loop){                                              // If probed to end of table, start from beginning
-                i = 0;
-                loop = 1;                                                                   // Set loop to 1 to prevent infinite loop
-            }
+        for(int i = 1; i < (int)htable.size; i++){
+            iterateIndex = hash(key + i, (int)htable.size);                                     // Get index to iterate through table
 
-            if(htable.table[i].key == key){                                                 // If key is found, return index
-                return i;
+            if(htable.table[iterateIndex].key == key){                                      // If key is at iterate index, return index
+                return iterateIndex;
             }
         }
     }
@@ -35,73 +32,80 @@ int getIndex(HashTable htable, Key key){                                        
 
 static int linearProbe(const HashTable* htable, Key key, unsigned int *col)                 // Linear probing, returns closest free index
 {
-    int size = (*htable).size;                                                              // Size of table
+    int size = (int)htable->size;                                                           // Size of table
     int index = hash(key, size);                                                            // Index of key
 
-    if((*htable).table[index].key == UNUSED){                                               // If key is free, return index
+    if(htable->table[index].key == UNUSED){                                                 // If key is free, return index
         return index;
     }else{                                                                                  // Else, find closest free index
-        while((*htable).table[index].key != UNUSED){
-
-            (*col)++;                                                                       // Count collisions, important that () is used here because PEMDAS
-            index++;
-            if(index >= size){                                                              // If probed to end of table, start from beginning
-                index = 0;
+        
+        int iterate = 0;
+        for(int i = 1; i < (int)htable->size; i++){
+            iterate = hash(key + i, size);                                                  // Get index to iterate through table
+            (*col)++;                                                                       // Increment number of collisions
+            if(htable->table[iterate].key == UNUSED){
+                return iterate;
             }
         }
-        return index;                                                                       // Return index of free spot
     }
+    return -1;                                                                              // If no free index is found, return -1
 }
 
 HashTable createHashTable(unsigned int size)                                                // Creates a new HashTable
 {
-    HashTable* htable;                       // Allocate memory for HashTable and Buckets
-    htable->table = (struct Bucket*)malloc(sizeof(struct Bucket) * size); 
-    assert(htable->table != NULL);                                                          // Assert that memory is allocated
+    HashTable htable = {0};
+    htable.size = size;                                                                     // Set size of table
+    htable.table = (struct Bucket*)malloc(sizeof(struct Bucket) * size); 
+    assert(htable.table != NULL);                                                           // Assert that memory is allocated
 
-    (*htable).size = size;                                                                  // Set size of table
-
-    for(int i = 0; i < size; i++){                                                          // Set all keys to UNUSED
-        (*htable).table[i].key = UNUSED;
+    for(int i = 0; (int)i < (int)size; i++){                                                // Set all keys to UNUSED
+        htable.table[i].key = UNUSED;
     }
 
-    return *htable;                                                                         // Return HashTable
+    return htable;                                                                          // Return HashTable
 }
 
 unsigned int insertElement(HashTable* htable, const Key key, const Value value)             // Inserts data into HashTable
 {
     int col = 0;
-    int index = linearProbe(htable, key, &col);                                             // Get index of free spot
+    int index = 0;
 
     if(lookup(htable, key) != NULL){                                                        // If key already exists, update value
         index = getIndex(*htable, key);
-        (*htable).table[index].value = value;
-    
-        return col;
-    }else{                                                                                  // Else, insert data
-        (*htable).table[index].key = key;
         htable->table[index].value = value;
+    
+        return (int)col;
 
-        assert(lookup(htable, key) != NULL);
-        return col;                                                                         // Return number of collisions
+    }else{                                                                                  // Else, insert new element
+        index = linearProbe(htable, key, &col);
+
+        if(index >= 0){
+            htable->table[index].key = key;
+            htable->table[index].value = value;
+            assert(lookup(htable, key) != NULL);
+            
+            return (int)col;                                                                // Return number of collisions
+        }else{
+            return -1;
+        }
+
     }
 }
 
 void deleteElement(HashTable* htable, const Key key)                                        // Deletes element with target key from HashTable
 {
     int index = getIndex(*htable, key);                                                     // Get index of key
-    index >= 0 ? (*htable).table[index].key = UNUSED : 0;                                   // If key exists, set key to UNUSED
+    index >= 0 ? htable->table[index].key = UNUSED : 0;                                     // If key exists, set key to UNUSED
 
-    for(int i = 0; i < htable->size; i++){                                                  // Rehash all elements
+    for(int i = 0; i < (int)htable->size; i++){                                             // Rehash all elements
         struct Bucket temp = htable->table[i];
-        (*htable).table[i].key = UNUSED;
+        htable->table[i].key = UNUSED;
         insertElement(htable, temp.key, temp.value);
     }
 }
 
 const Value* lookup(const HashTable* htable, const Key key)                                 // Returns pointer to value of target key
 {
-    int size = (*htable).size;
     int index = getIndex(*htable, key);                                                     // Get index of key
 
     if(index >= 0){                                                                         // If key exists, return pointer to value
@@ -113,24 +117,28 @@ const Value* lookup(const HashTable* htable, const Key key)                     
 
 void freeHashTable(HashTable* htable)                                                       // Frees memory of HashTable
 {
-    free((*htable).table);                                                                  // Free memory of Buckets
-    (*htable).table = NULL;                                                                 // Set pointer to NULL
-    (*htable).size = 0;                                                                     // Set size to 0
+    free(htable->table);                                                                    // Free memory of Buckets
+    htable->table = NULL;                                                                   // Set pointer to NULL
+    htable->size = 0;                                                                       // Set size to 0
 
-    assert((*htable).size == 0);                                                            // Assert that size is 0
+    assert(htable->size == 0);                                                              // Assert that size is 0
 }
 
 unsigned int getSize(const HashTable* htable)                                               // Returns size of HashTable
 {
-    return (*htable).size;
+    return htable->size;
 }
 
 void printHashTable(const HashTable* htable)                                                // Prints HashTable
 {
-    for(int i = 0; i < htable->size; i++){                                                  // Print all Buckets
+    for(int i = 0; i < (int)htable->size; i++){                                             // Print all Buckets
         if(htable->table[i].key != UNUSED){                                                 // If key is not UNUSED, print key and value
             printf("%i; Key: %i, Name: %s, PersonalNumber: %i, Weight: %f\n", 
-                i, htable->table[i].key, htable->table[i].value.name, htable->table[i].value.personalNumber, htable->table[i].value.weight);
+                i, 
+                htable->table[i].key, 
+                htable->table[i].value.name, 
+                htable->table[i].value.personalNumber, 
+                htable->table[i].value.weight);
         }else{                                                                              // Else, print UNUSED
             printf("%i; Key: UNUSED\n", i);
         }

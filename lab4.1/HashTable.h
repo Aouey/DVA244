@@ -7,11 +7,11 @@
 /*Hashtabell som loser krockar med hjalp av oppen adressering*/
 typedef struct 
 {
-	struct Bucket* table; //Hashtabellen Šr en array av Buckets
-	unsigned int size; // Storleken pŒ Hashtabellen
-} HashTable;
+	struct Bucket* table; //Hashtabellen ï¿½r en array av Buckets
+	unsigned int size; // Storleken pï¿½ Hashtabellen
+} 	HashTable;
 
-/*Allokerar minne fšr tabellen*/
+/*Allokerar minne fï¿½r tabellen*/
 HashTable createHashTable(unsigned int size);
 
 /* Satter in paret {key,data} i Hashtabellen, om en nyckel redan finns ska vardet modifieras */
