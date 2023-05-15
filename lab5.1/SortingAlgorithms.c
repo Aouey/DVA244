@@ -10,7 +10,7 @@ int isImplemented(SortingAlgorithm algorithm)
 	switch (algorithm)
 	{
       case BUBBLE_SORT:
-//      case INSERTION_SORT:
+      case INSERTION_SORT:
 //      case SELECTION_SORT:
 //      case QUICK_SORT:
 //      case MERGE_SORT:
@@ -29,6 +29,10 @@ int isImplemented(SortingAlgorithm algorithm)
 
 static void bubbleSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)						// Bubble Sort
 {
+	if(isSorted(arrayToSort, size) == 1){																		// Checks if the array is sorted
+		return;																									// If true return
+	}
+
 	for(int i = 0; lessThan(i, size - 1, statistics); i++){														// Loops through the array
 		if(greaterThan(arrayToSort[i], arrayToSort[i+1], statistics)){											// Checks if the current element is bigger than the next
 			swapElements(&arrayToSort[i], &arrayToSort[i+1], statistics);										// If true swap the elements
@@ -39,18 +43,13 @@ static void bubbleSort(ElementType* arrayToSort, unsigned int size, Statistics* 
 
 static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
-	for(int i = 0; i < size - 1; i++){
-		if(arrayToSort[i] > arrayToSort[i + 1]){
-			int toSort = arrayToSort[i];
-			for(int j = i; j > 0; j--){
-
-				
-				if(arrayToSort[j] < arrayToSort[j + 1]){
-					arrayToSort[j] = arrayToSort[i];
-				}else{
-					
-				}
-			}
+	for(int sortedLimit = 1; lessThan(sortedLimit, size, statistics); sortedLimit++){
+		int destination = 0;
+		while(lessThan(arrayToSort[destination], arrayToSort[sortedLimit], statistics)){
+			destination++;
+		}
+		for(){
+			// move all indexes of destination + 1 forward 1 place
 		}
 	}
 }
