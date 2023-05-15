@@ -9,7 +9,7 @@ int isImplemented(SortingAlgorithm algorithm)
 {
 	switch (algorithm)
 	{
-//      case BUBBLE_SORT:
+      case BUBBLE_SORT:
 //      case INSERTION_SORT:
 //      case SELECTION_SORT:
 //      case QUICK_SORT:
@@ -39,6 +39,20 @@ static void bubbleSort(ElementType* arrayToSort, unsigned int size, Statistics* 
 
 static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
+	for(int i = 0; i < size - 1; i++){
+		if(arrayToSort[i] > arrayToSort[i + 1]){
+			int toSort = arrayToSort[i];
+			for(int j = i; j > 0; j--){
+
+				
+				if(arrayToSort[j] < arrayToSort[j + 1]){
+					arrayToSort[j] = arrayToSort[i];
+				}else{
+					
+				}
+			}
+		}
+	}
 }
 
 static void selectionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
@@ -51,22 +65,6 @@ void auxMerge(ElementType* arrayOne, ElementType* arrayTwo, ElementType* arrayTo
 
 static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
-	if(lessThan(size, 1, statistics)) return;																	// If the array is smaller than 2, return
-	int middle = size/2;
-
-	ElementType* left = malloc(sizeof(ElementType) * middle);													// Allocate memory for the left array
-	ElementType* right = malloc(sizeof(ElementType) * (size - middle));											// Allocate memory for the right array
-
-	for(int i = 0; lessThan(i, middle, statistics); i++){														// Loops through the left array
-		left[i] = arrayToSort[i];																				// Copies the elements from the original array to the left array
-	}
-
-	for(int i = middle; lessThan(i, size, statistics); i++){													// Loops through the right array
-		right[i - middle] = arrayToSort[i];																		// Copies the elements from the original array to the right array
-	}
-
-	mergeSort(left, middle, statistics);																		// splits the left array 
-	mergeSort(right, size - middle, statistics);																// splits the right array
 }
 
 static void quickSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)

@@ -18,7 +18,7 @@ static struct treeNode* createNode(int data)                                    
    }
 }
 
-writeInorder(const BSTree tree, int* array, int* index)                                            // writes the tree to an array in inorder
+void writeInorder(const BSTree tree, int* array, int* index)                                            // writes the tree to an array in inorder
 {
    if(tree == NULL){                                                                               // if tree is empty return
       return;
