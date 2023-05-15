@@ -77,14 +77,14 @@ void testTree(BSTree tree)
     // Addera 9 element sa att tradet blir obalanserat
     for (i = 0; i < 9; i++)
         insertSorted(&tree, i+20);
-    
+
     assert(numberOfNodes(tree) == 10);
     
     //Verifiera att tradet ar obalanserat
     assert(depth(tree) != minDepth(tree));
     
     balanceTree(&tree);
-    assert(numberOfNodes(tree) == 10); // Verifiera att antalet noder ar detsamma
+    assert(numberOfNodes(tree) == 10); // Verifiera att antalet noder ar detsamma    
     assert(depth(tree) == minDepth(tree)); // Verifiera att tradet ar balanserat
     
     // Tom tradet och kontrollera att det ar tomt

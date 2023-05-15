@@ -6,7 +6,7 @@
 
 static struct treeNode* createNode(int data)                                                       // creates a new node with data and returns it
 {
-   struct treeNode* newNode = (struct treeNode*)malloc(sizeof(struct treeNode*));                  // allocate memory for node
+   struct treeNode* newNode = (struct treeNode*)malloc(sizeof(struct treeNode));                   // allocate memory for node
    if(newNode == NULL){                                                                            // if allocation failed return NULL
       return newNode;
    }else{                                                                                          // if allocation succeeded, initialize node
@@ -18,17 +18,15 @@ static struct treeNode* createNode(int data)                                    
    }
 }
 
-int findSmallest(const BSTree tree)                                                                // finds the smallest element in the tree
+writeInorder(const BSTree tree, int* array, int* index)                                            // writes the tree to an array in inorder
 {
-   if(isEmpty(tree)){                                                                              // if tree is empty return -1
-      return -1;
+   if(tree == NULL){                                                                               // if tree is empty return
+      return;
    }else{
-      BSTree temp = tree;                                                                          // create a copy of tree to not destroy the original tree
-      if(temp->left == NULL){                                                                      // if left child is NULL, return data
-         return temp->data;
-      }else{
-         return findSmallest(temp->left);                                                          // if left child is not NULL, search left
-      }
+      writeInorder(tree->left, array, index);                                                      // recursive call
+      array[*index] = tree->data;                                                                  // write current node to array
+      (*index)++;                                                                                  // increment index
+      writeInorder(tree->right, array, index);                                                     // recursive call
    }
 }
 
@@ -42,10 +40,7 @@ static int* writeSortedToArray(const BSTree tree)                               
       assert(array != NULL);                                                                       // assert that allocation succeeded
       
       int index = 0;                                                                               // index for array
-      array[index] = writeSortedToArray(tree->left);                                               // recursive call
-      array[index] = tree->data;                                                                   // write data to array
-      index++;                                                                                     // increment index
-      array[index] = writeSortedToArray(tree->right);                                              // recursive call
+      writeInorder(tree, array, &index);                                                           // recursive call
 
       return array;                                                                                // return array
    }
@@ -81,6 +76,7 @@ void insertSorted(BSTree* tree, int data)                                       
 {
    if(*tree == NULL){                                                                              // if tree is empty or end of tree is reached create new node                             
       *tree = createNode(data);
+      assert(*tree != NULL);
 
    }else{                                                                                          // if duplicate node is found abort funtion
       if(data == (*tree)->data){
@@ -244,13 +240,9 @@ void freeTree(BSTree* tree)
    if(isEmpty(*tree)){
       return;
    }else{
-      printInorder(*tree, stdout); printf("\n-\n");
-
       freeTree(&(*tree)->left);
       freeTree(&(*tree)->right);
       isEmpty(*tree) ? 0 : free(*tree);
-
-      printInorder(*tree, stdout); printf("\n : \n");
       
       *tree = NULL;
 
