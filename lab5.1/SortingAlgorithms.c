@@ -12,7 +12,7 @@ int isImplemented(SortingAlgorithm algorithm)
       case BUBBLE_SORT:
       case INSERTION_SORT:
       case SELECTION_SORT:
-//      case QUICK_SORT:
+      case QUICK_SORT:
 //      case MERGE_SORT:
             return 1;
         default:
@@ -56,9 +56,8 @@ static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistic
 	}
 }
 
-
 static void auxSelection(ElementType* arrayToSort, unsigned int size, int firstIndex, Statistics* statistics){
-	if(greaterThan(firstIndex, size, statistics)){
+	if(greaterThanOrEqualTo(firstIndex, size, statistics)){
 		return;
 	}
 
@@ -86,8 +85,28 @@ static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* s
 {
 }
 
+static void auxQuick(ElementType* arrayToSort, unsigned int size, int firstIndex, int lastIndex, Statistics* statistics){
+	if(greaterThanOrEqualTo(firstIndex, lastIndex, statistics)){
+		return;
+	}
+
+	int pivot = arrayToSort[lastIndex];
+	int i = firstIndex - 1;
+	for(int j = firstIndex; lessThan(j, lastIndex, statistics); j++){
+		if(lessThan(arrayToSort[j], pivot, statistics)){
+			i++;
+			swapElements(&arrayToSort[i], &arrayToSort[j], statistics);
+		}
+	}
+	swapElements(&arrayToSort[i+1], &arrayToSort[lastIndex], statistics);
+
+	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, firstIndex, i, statistics);
+	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, i+2, lastIndex, statistics);
+}
+
 static void quickSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
+	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, 0, size - 1, statistics);
 }
 
 /******************************************************************************************/

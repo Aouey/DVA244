@@ -55,3 +55,22 @@ Bakåtsorterat:
   20 element:   628 jämförelser,   190 byten
   40 element:  2458 jämförelser,   780 byten
 
+---------------------------------------------
+--------         Quick sort         ---------
+---------------------------------------------
+
+Osorterat: 
+  10 element:    75 jämförelser,    30 byten
+  20 element:   148 jämförelser,    39 byten
+  40 element:   545 jämförelser,   121 byten
+
+Sorterat: 
+  10 element:     0 jämförelser,     0 byten
+  20 element:     0 jämförelser,     0 byten
+  40 element:     0 jämförelser,     0 byten
+
+Bakåtsorterat: 
+  10 element:   112 jämförelser,    29 byten
+  20 element:   427 jämförelser,   109 byten
+  40 element:  1657 jämförelser,   419 byten
+
