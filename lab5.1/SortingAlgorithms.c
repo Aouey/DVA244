@@ -11,7 +11,7 @@ int isImplemented(SortingAlgorithm algorithm)
 	{
       case BUBBLE_SORT:
       case INSERTION_SORT:
-//      case SELECTION_SORT:
+      case SELECTION_SORT:
 //      case QUICK_SORT:
 //      case MERGE_SORT:
             return 1;
@@ -56,8 +56,30 @@ static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistic
 	}
 }
 
+
+static void auxSelection(ElementType* arrayToSort, unsigned int size, int firstIndex, Statistics* statistics){
+	if(greaterThan(firstIndex, size, statistics)){
+		return;
+	}
+
+	int smallestIndex = firstIndex;
+	for(int i = firstIndex; lessThan(i, size, statistics); i++){
+		lessThan(arrayToSort[i], arrayToSort[smallestIndex], statistics) == 1 ? smallestIndex = i : 0;
+	}
+
+	// printf("\n------------------\n");
+	// for(int h = 0; h < size; h++){
+	// 	printf("%i, ", arrayToSort[h]);
+	// }
+	// printf("\n------------------\n");
+
+	swapElements(&arrayToSort[smallestIndex], &arrayToSort[firstIndex], statistics);
+	isSorted(arrayToSort, size) == 1 ? 0 : auxSelection(arrayToSort, size, ++firstIndex, statistics);
+}
+
 static void selectionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
+	isSorted(arrayToSort, size) == 1 ? 0 : auxSelection(arrayToSort, size, 0, statistics);
 }
 
 static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
