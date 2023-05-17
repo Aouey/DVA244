@@ -22,17 +22,17 @@ Bakåtsorterat:
 ---------------------------------------------
 
 Osorterat: 
-  10 element:   131 jämförelser,     4 byten
-  20 element:   461 jämförelser,    37 byten
-  40 element:  1721 jämförelser,   132 byten
+  10 element:   124 jämförelser,     6 byten
+  20 element:   551 jämförelser,   113 byten
+  40 element:  2152 jämförelser,   474 byten
 
 Sorterat: 
-  10 element:   131 jämförelser,     0 byten
-  20 element:   461 jämförelser,     0 byten
-  40 element:  1721 jämförelser,     0 byten
+  10 element:   118 jämförelser,     0 byten
+  20 element:   438 jämförelser,     0 byten
+  40 element:  1678 jämförelser,     0 byten
 
 Bakåtsorterat: 
-  10 element:   131 jämförelser,     5 byten
-  20 element:   461 jämförelser,    10 byten
-  40 element:  1721 jämförelser,    20 byten
+  10 element:   163 jämförelser,    45 byten
+  20 element:   628 jämförelser,   190 byten
+  40 element:  2458 jämförelser,   780 byten
 

@@ -44,22 +44,20 @@ static void bubbleSort(ElementType* arrayToSort, unsigned int size, Statistics* 
 static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
 	for(int sortedLimit = 1; lessThan(sortedLimit, size, statistics); sortedLimit++){
-		int destination = 0;
-		while(lessThan(arrayToSort[destination], arrayToSort[sortedLimit], statistics)){
-			destination++;
+
+		int index = 0;
+		for(int i = 0; lessThan(i, sortedLimit, statistics); i++){
+			lessThan(arrayToSort[sortedLimit], arrayToSort[i], statistics) == 1 ? 0 : index++;
 		}
-		for(){
-			// move all indexes of destination + 1 forward 1 place
+
+		for(int k = sortedLimit; greaterThan(k, index, statistics); k--){
+			swapElements(&arrayToSort[k], &arrayToSort[k-1], statistics);
 		}
 	}
 }
 
 static void selectionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
-}
-
-void auxMerge(ElementType* arrayOne, ElementType* arrayTwo, ElementType* arrayToSort, int sizeOne, int sizeTwo){
-
 }
 
 static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
