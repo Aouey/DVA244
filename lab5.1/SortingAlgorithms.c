@@ -41,29 +41,28 @@ static void bubbleSort(ElementType* arrayToSort, unsigned int size, Statistics* 
 	isSorted(arrayToSort, size) == 1 ? 0 : bubbleSort(arrayToSort, size, statistics);							// If the array is not sorted, call the function again
 }
 
-static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
+static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)					// Insertion Sort
 {
-	for(int sortedLimit = 1; lessThan(sortedLimit, size, statistics); sortedLimit++){
+	for(int sortedLimit = 1; lessThan(sortedLimit, size, statistics); sortedLimit++){ 							// Loops through the array
 
 		int index = 0;
-		for(int i = 0; lessThan(i, sortedLimit, statistics); i++){
-			lessThan(arrayToSort[sortedLimit], arrayToSort[i], statistics) == 1 ? 0 : index++;
-		}
+		for(int i = 0; lessThan(i, sortedLimit, statistics); i++){												// Loops through the sorted part of the array
+			lessThan(arrayToSort[sortedLimit], arrayToSort[i], statistics) == 1 ? 0 : index++;					// Checks if the first element in the unsorted part is smaller than the current element in the sorted part
+		}																										// If true increment the index
 
-		for(int k = sortedLimit; greaterThan(k, index, statistics); k--){
-			swapElements(&arrayToSort[k], &arrayToSort[k-1], statistics);
+		for(int k = sortedLimit; greaterThan(k, index, statistics); k--){										// Loops from first element in the unsorted part to target index (index)
+			swapElements(&arrayToSort[k], &arrayToSort[k-1], statistics);										// Swap the elements to the left until firt element in the unsorted part is at target index
 		}
 	}
 }
 
-static void auxSelection(ElementType* arrayToSort, unsigned int size, int firstIndex, Statistics* statistics){
-	if(greaterThanOrEqualTo(firstIndex, size, statistics)){
-		return;
-	}
+static void auxSelection(ElementType* arrayToSort, unsigned int size, int firstIndex, Statistics* statistics){ 	// Auxilary function for Selection Sort
+	if(greaterThanOrEqualTo(firstIndex, size, statistics)) return;												// Checks if the first index is greater than or equal to the size of the array, if true return
+		 
 
-	int smallestIndex = firstIndex;
-	for(int i = firstIndex; lessThan(i, size, statistics); i++){
-		lessThan(arrayToSort[i], arrayToSort[smallestIndex], statistics) == 1 ? smallestIndex = i : 0;
+	int smallestIndex = firstIndex; 																			// Sets the smallest index to the first index in the unsorted part of the array
+	for(int i = firstIndex; lessThan(i, size, statistics); i++){												// Loops through the unsorted part of the array
+		lessThan(arrayToSort[i], arrayToSort[smallestIndex], statistics) == 1 ? smallestIndex = i : 0;			// Checks if current element is smaller than the current smallest element, if true set the smallest index to the current index
 	}
 
 	// printf("\n------------------\n");
@@ -72,36 +71,37 @@ static void auxSelection(ElementType* arrayToSort, unsigned int size, int firstI
 	// }
 	// printf("\n------------------\n");
 
-	swapElements(&arrayToSort[smallestIndex], &arrayToSort[firstIndex], statistics);
-	isSorted(arrayToSort, size) == 1 ? 0 : auxSelection(arrayToSort, size, ++firstIndex, statistics);
+	swapElements(&arrayToSort[smallestIndex], &arrayToSort[firstIndex], statistics);							// Swap the smallest element with the first element in the unsorted part of the array
+	isSorted(arrayToSort, size) == 1 ? 0 : auxSelection(arrayToSort, size, ++firstIndex, statistics);			// If the array is not sorted, call the function again
 }
 
-static void selectionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
+static void selectionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)					// Selection Sort
 {
-	isSorted(arrayToSort, size) == 1 ? 0 : auxSelection(arrayToSort, size, 0, statistics);
+	isSorted(arrayToSort, size) == 1 ? 0 : auxSelection(arrayToSort, size, 0, statistics);						// If the array is not sorted, call the auxilary function
 }
 
-static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
+static void mergeSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)						// Merge Sort, not started
 {
 }
 
-static void auxQuick(ElementType* arrayToSort, unsigned int size, int firstIndex, int lastIndex, Statistics* statistics){
-	if(greaterThanOrEqualTo(firstIndex, lastIndex, statistics)){
+static void auxQuick(ElementType* arrayToSort, unsigned int size, int firstIndex, int lastIndex, Statistics* statistics){	// Auxilary function for Quick Sort
+	if(greaterThanOrEqualTo(firstIndex, lastIndex, statistics)){												// Checks if end of array is reached, if true return
 		return;
 	}
 
-	int pivot = arrayToSort[lastIndex];
-	int i = firstIndex - 1;
-	for(int j = firstIndex; lessThan(j, lastIndex, statistics); j++){
-		if(lessThan(arrayToSort[j], pivot, statistics)){
-			i++;
-			swapElements(&arrayToSort[i], &arrayToSort[j], statistics);
+	int pivot = arrayToSort[lastIndex]; 																		// Sets the pivot to the last element in the array
+	int i = firstIndex; 																						// Sets the first index to the first element in the array
+
+	for(int j = firstIndex; lessThan(j, lastIndex, statistics); j++){											// Loops through the array
+		if(lessThan(arrayToSort[j], pivot, statistics)){														// Checks if the current element is smaller than the pivot
+			swapElements(&arrayToSort[i], &arrayToSort[j], statistics);											// If true swap the elements
+			i++;																								// Increment the first index
 		}
 	}
-	swapElements(&arrayToSort[i+1], &arrayToSort[lastIndex], statistics);
 
-	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, firstIndex, i, statistics);
-	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, i+2, lastIndex, statistics);
+	swapElements(&arrayToSort[i], &arrayToSort[lastIndex], statistics);											// Swap the pivot with the element at the first index
+	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, firstIndex, i - 1, statistics);			// If the array is not sorted, call the function again
+	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, i + 1, lastIndex, statistics);			// If the array is not sorted, call the function again
 }
 
 static void quickSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
