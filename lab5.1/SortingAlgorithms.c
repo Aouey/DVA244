@@ -90,18 +90,18 @@ static void auxQuick(ElementType* arrayToSort, unsigned int size, int firstIndex
 	}
 
 	int pivot = arrayToSort[lastIndex]; 																		// Sets the pivot to the last element in the array
-	int i = firstIndex; 																						// Sets the first index to the first element in the array
+	int i = firstIndex; 																						// Sets swap index to the first index in the array
 
 	for(int j = firstIndex; lessThan(j, lastIndex, statistics); j++){											// Loops through the array
 		if(lessThan(arrayToSort[j], pivot, statistics)){														// Checks if the current element is smaller than the pivot
 			swapElements(&arrayToSort[i], &arrayToSort[j], statistics);											// If true swap the elements
-			i++;																								// Increment the first index
+			i++;																								// Increment the swap index
 		}
 	}
 
-	swapElements(&arrayToSort[i], &arrayToSort[lastIndex], statistics);											// Swap the pivot with the element at the first index
-	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, firstIndex, i - 1, statistics);			// If the array is not sorted, call the function again
-	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, i + 1, lastIndex, statistics);			// If the array is not sorted, call the function again
+	swapElements(&arrayToSort[i], &arrayToSort[lastIndex], statistics);											// Swap the pivot with the element at the swap index
+	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, firstIndex, i - 1, statistics);			// Call the function recursively for the left part of the array
+	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, i + 1, lastIndex, statistics);			// Call the function recursively for the right part of the array
 }
 
 static void quickSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
