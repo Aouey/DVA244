@@ -29,51 +29,47 @@ int isImplemented(SortingAlgorithm algorithm)
 
 static void bubbleSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)						// Bubble Sort
 {
-	for(int outer = 0; lessThan(outer, size - 1, statistics); outer++){
-		if(isSorted(arrayToSort, size)) return;
+	for(int outer = 0; lessThan(outer, size - 1, statistics); outer++){ 										// Outer loop, loops over array once
+		int sort = 0;																							// Sort variable to check if array is sorted
+		for(int inner = 0; lessThan(inner, size - outer - 1, statistics); inner++){								// Inner loop checks values and swaps places
 
-		for(int inner = 0; lessThan(inner, size - outer - 1, statistics); inner++){
-
-			if(greaterThan(arrayToSort[inner], arrayToSort[inner + 1], statistics)){
+			if(greaterThan(arrayToSort[inner], arrayToSort[inner + 1], statistics)){							// If items are not in order swap them
 				swapElements(&arrayToSort[inner], &arrayToSort[inner + 1], statistics);
+				sort++;																							// Increment sort variable
 			}
 		}
+		if(sort == 0) return;																					// Checks if array is sorted and returns if true
 	}
 }
 
 static void insertionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)					// Insertion Sort
 {
 	for(int sortedLimit = 1; lessThan(sortedLimit, size, statistics); sortedLimit++){ 							// Loops through the array
-		if(isSorted(arrayToSort, size)) return;																	// Checks if the array is sorted, if true return
 		
 		int index = 0;
 		for(int i = 0; lessThan(i, sortedLimit, statistics); i++){												// Loops through the sorted part of the array
 			lessThan(arrayToSort[sortedLimit], arrayToSort[i], statistics) == 1 ? 0 : index++;					// Checks if the first element in the unsorted part is smaller than the current element in the sorted part
 		}																										// If true increment the index
-
-		for(int k = sortedLimit; greaterThan(k, index, statistics); k--){										// Loops from first element in the unsorted part to target index (index)
-			swapElements(&arrayToSort[k], &arrayToSort[k-1], statistics);										// Swap the elements to the left until firt element in the unsorted part is at target index
+		
+		if(index != sortedLimit){																				// Small optimisation, checks if the element is already in the right place
+			for(int k = sortedLimit; greaterThan(k, index, statistics); k--){									// Loops from first element in the unsorted part to target index (index)
+				swapElements(&arrayToSort[k], &arrayToSort[k-1], statistics);									// Swap the elements to the left until firt element in the unsorted part is at target index
+			}
 		}
 	}
 }
 
-static void auxSelection(ElementType* arrayToSort, unsigned int size, int firstIndex, Statistics* statistics){ 	// Auxilary function for Selection Sort
-	if(greaterThanOrEqualTo(firstIndex, size, statistics)) return;												// Checks if the first index is greater than or equal to the size of the array, if true return
-
-	int smallestIndex = firstIndex; 																			// Sets the smallest index to the first index in the unsorted part of the array
-	for(int i = firstIndex; lessThan(i, size, statistics); i++){												// Loops through the unsorted part of the array
-		lessThan(arrayToSort[i], arrayToSort[smallestIndex], statistics) == 1 ? smallestIndex = i : 0;			// Checks if current element is smaller than the current smallest element, if true set the smallest index to the current index
-	}
-
-	swapElements(&arrayToSort[smallestIndex], &arrayToSort[firstIndex], statistics);							// Swap the smallest element with the first element in the unsorted part of the array
-}
-
 static void selectionSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)					// Selection Sort
 {
-	if(isSorted(arrayToSort, size)) return;																		// Checks if the array is sorted, if true return
+	for(int first = 0; lessThan(first, size, statistics); first++){												// Loops through the array
 
-	for(int i = 0; lessThan(i, size, statistics); i++){															// Loops through the array
-		auxSelection(arrayToSort, size, i, statistics);															// Call the auxilary function
+		int smallest = first; 																					// Sets the smallest index to the first index in the unsorted part of the array
+		for(int i = first; lessThan(i, size, statistics); i++){													// Loops through the unsorted part of the array
+			lessThan(arrayToSort[i], arrayToSort[smallest], statistics) == 1 ? smallest = i : 0;				// Checks if current element is smaller than the current smallest element, if true set the smallest index to the current index
+		}
+		if(arrayToSort[smallest] < arrayToSort[first]){															// Make size comparison to avoid unnecessary swaps
+			swapElements(&arrayToSort[smallest], &arrayToSort[first], statistics);								// Swap the smallest element with the first element in the unsorted part of the array
+		}
 	}
 }
 
@@ -95,13 +91,13 @@ static void auxQuick(ElementType* arrayToSort, unsigned int size, int firstIndex
 	}
 
 	swapElements(&arrayToSort[i], &arrayToSort[lastIndex], statistics);											// Swap the pivot with the element at the swap index
-	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, firstIndex, i - 1, statistics);			// Call the function recursively for the left part of the array
-	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, i + 1, lastIndex, statistics);			// Call the function recursively for the right part of the array
+	auxQuick(arrayToSort, size, firstIndex, i - 1, statistics);													// Call the function recursively for the left part of the array
+	auxQuick(arrayToSort, size, i + 1, lastIndex, statistics);													// Call the function recursively for the right part of the array
 }
 
 static void quickSort(ElementType* arrayToSort, unsigned int size, Statistics* statistics)
 {
-	isSorted(arrayToSort, size) == 1 ? 0 : auxQuick(arrayToSort, size, 0, size - 1, statistics);
+	auxQuick(arrayToSort, size, 0, size - 1, statistics);
 }
 
 /******************************************************************************************/
