@@ -30,16 +30,15 @@ int getIndex(HashTable htable, Key key){                                        
     return -1;                                                                              // If key is not found, return -1
 }
 
-// Added for exam 24/05----------------                                                     // The function could not be called collisions (plural) as there already was a variable with the same name
+// Added for exam 24/05----------------                                             // The function could not be called collisions (plural) as there already was a variable with the same name in test_HashTable.c
 
 int collision(HashTable table){                                                             // Returns how many keys have the "wrong" index
     int collisions = 0;
     for(int i = 0; i < table.size; i++){                                                    // Loops through the hash table
         int key = table.table[i].key;
-        int pos = getIndex(table, key);
-        int trgt = hash(key, table.size);
+        int pos = hash(key, table.size);
 
-        if(pos != trgt && key != UNUSED) collisions++;                                      // Checks if the key is on the same index as the hash function says
+        if(pos != i && key != UNUSED) collisions++;                                         // Checks if the key is on the same index as the hash function says
     }                                                                                       // If true add one to collisions variable
     return collisions;                                                                      // Return collisions 
 }
