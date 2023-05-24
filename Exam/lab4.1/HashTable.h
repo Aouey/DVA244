@@ -11,6 +11,13 @@ typedef struct
 	unsigned int size; // Storleken p� Hashtabellen
 } 	HashTable;
 
+// Added for exam 24/05----------------
+
+/*Returnerar antalet v�rden som �r på fel plats*/
+int collision(HashTable table);
+
+// ------------------------------------
+
 /*Allokerar minne f�r tabellen*/
 HashTable createHashTable(unsigned int size);
 

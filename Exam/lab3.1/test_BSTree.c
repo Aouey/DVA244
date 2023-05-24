@@ -45,11 +45,12 @@ void testTree(BSTree tree)
 
 // Added for exam 24/05----------------
 
+    // Ta bort extremv�rden
     removeExtremes(&tree);
-
+    // Testa att de �r borta
     assert(!find(tree, 1));
     assert(!find(tree, 19));
-    
+    // Satt tillbaka v�rden
     insertSorted(&tree, 1);
     insertSorted(&tree, 19);
 

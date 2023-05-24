@@ -167,6 +167,13 @@ void test(void)
     assert(htable.table[9].key == 510929); 
     assert(collisions == 11);   
     
+// Added for exam 24/05----------------
+
+    // Testa att den raknar ratt
+    assert(collision(htable) == 4);
+
+// ------------------------------------
+
     //lagg till dubblett av key - value ska uppdateras
     strcpy(aPerson.name, "Anna");
     aPerson.personalNumber = 881011;

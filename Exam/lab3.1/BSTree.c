@@ -4,31 +4,35 @@
 #include <math.h>
 #include "BSTree.h"
 
-static int findSmallest(BSTree tree){
+// Added for exam 24/05----------------
+
+static int findSmallest(BSTree tree){                                                              // Finds the smallest value in tree
    BSTree temp = tree;
-   while(temp->left != NULL){
+   while(temp->left != NULL){                                                                      // Loops left part of tree to find smallest value
       temp = temp->left;
    }
-   return temp->data;
+   return temp->data;                                                                              // Returns smallest data
 }
 
-static int findLargest(BSTree tree){
+static int findLargest(BSTree tree){                                                               // Finds the largest value in tree
    BSTree temp = tree;
-   while(temp->right != NULL){
+   while(temp->right != NULL){                                                                     // Loops right part of tree to find largest value
       temp = temp->right;
    }
-   return temp->data;
+   return temp->data;                                                                              // Returns largest data
 }
 
-void removeExtremes(BSTree* tree){
-   if(isEmpty(*tree)) return;
+void removeExtremes(BSTree* tree){                                                                 // Removes the largest and smallest values from tree
+   if(isEmpty(*tree)) return;                                                                      // If tree is empty return
 
-   int smallest = findSmallest(*tree);
+   int smallest = findSmallest(*tree);                                                             // Find largest and smallest elements in tree
    int largest = findLargest(*tree);
 
-   removeElement(tree, smallest);
+   removeElement(tree, smallest);                                                                  // Removes elements from tree
    removeElement(tree, largest);
 }
+
+// ------------------------------------
 
 static struct treeNode* createNode(int data)                                                       // creates a new node with data and returns it
 {
@@ -44,7 +48,7 @@ static struct treeNode* createNode(int data)                                    
    }
 }
 
-void writeInorder(const BSTree tree, int* array, int* index)                                            // writes the tree to an array in inorder
+void writeInorder(const BSTree tree, int* array, int* index)                                       // writes the tree to an array in inorder
 {
    if(tree == NULL){                                                                               // if tree is empty return
       return;
@@ -261,7 +265,7 @@ void balanceTree(BSTree* tree)                                                  
    }
 }
 
-void freeTree(BSTree* tree)
+void freeTree(BSTree* tree)                                                                        // Frees the memory allocated to tree
 {
    if(isEmpty(*tree)){
       return;

@@ -20,7 +20,7 @@ int getIndex(HashTable htable, Key key){                                        
 
     }else{
         for(int i = 1; i < (int)htable.size; i++){
-            iterateIndex = hash(key + i, (int)htable.size);                                     // Get index to iterate through table
+            iterateIndex = hash(key + i, (int)htable.size);                                 // Get index to iterate through table
 
             if(htable.table[iterateIndex].key == key){                                      // If key is at iterate index, return index
                 return iterateIndex;
@@ -29,6 +29,22 @@ int getIndex(HashTable htable, Key key){                                        
     }
     return -1;                                                                              // If key is not found, return -1
 }
+
+// Added for exam 24/05----------------                                                     // The function could not be called collisions (plural) as there already was a variable with the same name
+
+int collision(HashTable table){                                                             // Returns how many keys have the "wrong" index
+    int collisions = 0;
+    for(int i = 0; i < table.size; i++){                                                    // Loops through the hash table
+        int key = table.table[i].key;
+        int pos = getIndex(table, key);
+        int trgt = hash(key, table.size);
+
+        if(pos != trgt && key != UNUSED) collisions++;                                      // Checks if the key is on the same index as the hash function says
+    }                                                                                       // If true add one to collisions variable
+    return collisions;                                                                      // Return collisions 
+}
+
+// ------------------------------------
 
 static int linearProbe(const HashTable* htable, Key key, unsigned int *col)                 // Linear probing, returns closest free index
 {

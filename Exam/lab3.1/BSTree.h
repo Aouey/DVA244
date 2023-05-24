@@ -12,8 +12,12 @@ struct treeNode
 
 typedef struct treeNode* BSTree;
 
-// Exam function
+// Added for exam 24/05----------------
+
+/* Tar bort extremv�rden fran tr�det */
 void removeExtremes(BSTree* tree);
+
+// ------------------------------------
 
 /* Skapar ett tomt trad */
 BSTree emptyTree(void);
